@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elevator-call-tester"
+dynamic = ["version"]
+description = "Bench and field tool to place elevator destination calls over Modbus (serial or IP converter) and inspect the frames on the wire."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Raphael Pires" }]
+requires-python = ">=3.10"
+dependencies = ["pyserial>=3.5"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Hardware",
+    "Environment :: X11 Applications",
+    "Environment :: Win32 (MS Windows)",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+build = ["pyinstaller>=6"]
+
+[project.scripts]
+elevator-call-simulator = "elevator_call_tester.simulator:main"
+
+[project.gui-scripts]
+elevator-call-tester = "elevator_call_tester.__main__:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "elevator_call_tester.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["elevator_call_tester*"]
+
+[tool.setuptools.package-data]
+elevator_call_tester = ["assets/*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+ignore = ["SIM105", "SIM108"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]
